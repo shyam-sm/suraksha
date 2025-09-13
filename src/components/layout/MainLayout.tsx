@@ -8,6 +8,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 // Pages
 import AdminDashboard from '@/pages/admin/Dashboard';
 import TouristHome from '@/pages/tourist/Home';
+import MyDigitalId from '@/pages/tourist/MyDigitalId';
+import TripDetails from '@/pages/tourist/TripDetails';
+import DailyLogs from '@/pages/tourist/DailyLogs';
+import Settings from '@/pages/tourist/Settings';
 import NotFound from '@/pages/NotFound';
 
 function AuthorityRoutes() {
@@ -18,7 +22,7 @@ function AuthorityRoutes() {
       <Route path="/alerts" element={<div className="p-8 text-center">Alerts & Incidents - Coming Soon</div>} />
       <Route path="/analytics" element={<div className="p-8 text-center">Analytics - Coming Soon</div>} />
       <Route path="/reports" element={<div className="p-8 text-center">Reports - Coming Soon</div>} />
-      <Route path="/settings" element={<div className="p-8 text-center">Settings - Coming Soon</div>} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -29,10 +33,10 @@ function TouristRoutes() {
   return (
     <Routes>
       <Route path="/home" element={<TouristHome />} />
-      <Route path="/my-id" element={<div className="p-8 text-center">Digital ID - Coming Soon</div>} />
-      <Route path="/trip-details" element={<div className="p-8 text-center">Trip Details - Coming Soon</div>} />
-      <Route path="/daily-logs" element={<div className="p-8 text-center">Daily Logs - Coming Soon</div>} />
-      <Route path="/settings" element={<div className="p-8 text-center">Settings - Coming Soon</div>} />
+      <Route path="/my-id" element={<MyDigitalId />} />
+      <Route path="/trip-details" element={<TripDetails />} />
+      <Route path="/daily-logs" element={<DailyLogs />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
