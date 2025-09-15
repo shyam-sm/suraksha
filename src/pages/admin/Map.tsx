@@ -119,11 +119,16 @@ export default function Map() {
     setGeofences(prev => prev.filter(g => g.id !== id));
   };
 
+  const handleCSVUpload = () => {
+    // TODO: Implement CSV upload functionality
+    console.log('CSV upload functionality to be implemented');
+  };
+
   const getTypeColor = (type: string) => {
     const colors = {
-      safe: 'bg-success text-success-foreground',
-      risky: 'bg-warning text-warning-foreground',
-      danger: 'bg-danger text-danger-foreground'
+      safe: 'bg-emerald-100 text-emerald-800',
+      risky: 'bg-amber-100 text-amber-800',
+      danger: 'bg-red-100 text-red-800'
     };
     return colors[type as keyof typeof colors] || colors.safe;
   };
@@ -136,7 +141,7 @@ export default function Map() {
           <p className="text-subtext">Manage safety zones and restricted areas</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleCSVUpload}>
             <Upload className="h-4 w-4 mr-2" />
             Upload CSV
           </Button>
@@ -158,11 +163,30 @@ export default function Map() {
               </CardTitle>
             </CardHeader>
             <CardContent className="h-full">
-              <div className="w-full h-full bg-muted rounded-lg flex items-center justify-center border-2 border-dashed border-border">
-                <div className="text-center space-y-2">
+              <div className="w-full h-full bg-gradient-to-br from-blue-50 to-green-50 rounded-lg flex items-center justify-center border-2 border-dashed border-border relative overflow-hidden">
+                {/* Mock Map Interface */}
+                <div className="absolute inset-0 opacity-40"></div>
+                
+                {/* Map Overlay with Geofences */}
+                <div className="relative w-full h-full p-4">
+                  {/* Simulated geofence markers */}
+                  <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-emerald-200/50 rounded-full border-2 border-emerald-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-emerald-700">Safe Zone</span>
+                  </div>
+                  <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-red-200/50 rounded-full border-2 border-red-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-red-700">Danger</span>
+                  </div>
+                  <div className="absolute bottom-1/3 left-1/2 w-18 h-18 bg-amber-200/50 rounded-full border-2 border-amber-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-amber-700">Risky</span>
+                  </div>
+                </div>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-background/10 to-transparent rounded-lg pointer-events-none"></div>
+                
+                <div className="text-center space-y-2 z-10">
                   <MapIcon className="h-12 w-12 mx-auto text-muted-foreground" />
-                  <p className="text-muted-foreground">Interactive Map View</p>
-                  <p className="text-sm text-muted-foreground">Mapbox integration will be displayed here</p>
+                  <p className="text-muted-foreground font-medium">Interactive Map View</p>
+                  <p className="text-sm text-muted-foreground">Geofence visualization and editing tools</p>
                 </div>
               </div>
             </CardContent>
@@ -186,7 +210,7 @@ export default function Map() {
               <CardTitle className="text-sm">Safe Zones</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-success">
+              <div className="text-2xl font-bold text-emerald-600">
                 {geofences.filter(g => g.type === 'safe').length}
               </div>
               <p className="text-xs text-subtext">Protected areas</p>
@@ -198,7 +222,7 @@ export default function Map() {
               <CardTitle className="text-sm">Danger Zones</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-danger">
+              <div className="text-2xl font-bold text-red-600">
                 {geofences.filter(g => g.type === 'danger').length}
               </div>
               <p className="text-xs text-subtext">High risk areas</p>
@@ -210,7 +234,7 @@ export default function Map() {
               <CardTitle className="text-sm">Risky Areas</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-warning">
+              <div className="text-2xl font-bold text-amber-600">
                 {geofences.filter(g => g.type === 'risky').length}
               </div>
               <p className="text-xs text-subtext">Caution zones</p>

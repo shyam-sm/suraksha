@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Send, Users, MapPin, Globe } from 'lucide-react';
+import { Send, Users, MapPin, Globe, MessageSquare, Clock } from 'lucide-react';
 
 interface BroadcastMessage {
   id: string;
@@ -22,7 +22,7 @@ interface BroadcastMessage {
 const mockMessages: BroadcastMessage[] = [
   {
     id: '1',
-    message: 'Weather alert: Heavy rainfall expected in your area. Please stay indoors.',
+    message: 'Weather alert: Heavy rainfall expected in your area. Please stay indoors and avoid outdoor activities.',
     targetType: 'area',
     targetValue: 'Kaziranga National Park',
     timestamp: '2024-01-15 14:30',
@@ -31,12 +31,21 @@ const mockMessages: BroadcastMessage[] = [
   },
   {
     id: '2', 
-    message: 'Tourist safety reminder: Register with local authorities upon arrival.',
+    message: 'Tourist safety reminder: Please register with local authorities upon arrival at your destination.',
     targetType: 'country',
     targetValue: 'India',
     timestamp: '2024-01-15 09:15',
     status: 'sent',
     recipientCount: 2840
+  },
+  {
+    id: '3',
+    message: 'Traffic advisory: Road closure on NH-37 due to maintenance work. Alternative routes available.',
+    targetType: 'area',
+    targetValue: 'Guwahati City',
+    timestamp: '2024-01-14 16:45',
+    status: 'sent',
+    recipientCount: 427
   }
 ];
 
@@ -60,11 +69,20 @@ export default function Broadcast() {
 
   const getStatusBadge = (status: string) => {
     const variants = {
-      sent: 'bg-success text-success-foreground',
-      pending: 'bg-warning text-warning-foreground', 
-      failed: 'bg-danger text-danger-foreground'
+      sent: 'bg-emerald-100 text-emerald-800',
+      pending: 'bg-amber-100 text-amber-800',
+      failed: 'bg-red-100 text-red-800'
     };
     return variants[status as keyof typeof variants] || variants.sent;
+  };
+
+  const getPriorityBadge = (priority: string) => {
+    const variants = {
+      low: 'bg-gray-100 text-gray-800',
+      medium: 'bg-blue-100 text-blue-800',
+      high: 'bg-red-100 text-red-800'
+    };
+    return variants[priority as keyof typeof variants] || variants.medium;
   };
 
   return (
@@ -89,21 +107,25 @@ export default function Broadcast() {
                 Send messages to tourists in specific areas or countries
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
+                <Label htmlFor="message" className="text-sm font-medium">Message</Label>
                 <Textarea
                   id="message"
                   placeholder="Enter your broadcast message..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   rows={4}
+                  className="resize-none"
                 />
+                <p className="text-xs text-muted-foreground">
+                  {message.length}/500 characters
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Target Type</Label>
+                  <Label className="text-sm font-medium">Target Type</Label>
                   <Select value={targetType} onValueChange={(value: 'area' | 'country') => setTargetType(value)}>
                     <SelectTrigger>
                       <SelectValue />
@@ -126,7 +148,7 @@ export default function Broadcast() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="target">
+                  <Label htmlFor="target" className="text-sm font-medium">
                     {targetType === 'area' ? 'Area Name' : 'Country Name'}
                   </Label>
                   <Input
@@ -139,28 +161,64 @@ export default function Broadcast() {
               </div>
 
               <div className="space-y-2">
-                <Label>Priority Level</Label>
+                <Label className="text-sm font-medium">Priority Level</Label>
                 <Select value={priority} onValueChange={(value: 'low' | 'medium' | 'high') => setPriority(value)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low Priority</SelectItem>
-                    <SelectItem value="medium">Medium Priority</SelectItem>
-                    <SelectItem value="high">High Priority</SelectItem>
+                    <SelectItem value="low">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-gray-400"></div>
+                        Low Priority
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="medium">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                        Medium Priority
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="high">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                        High Priority
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <Separator />
 
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium">Message Preview</h4>
+                <div className="bg-muted/50 p-4 rounded-lg border-l-4 border-primary">
+                  <div className="flex items-start gap-2">
+                    <MessageSquare className="h-4 w-4 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium">Tourist Safety Alert</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {message || 'Your message will appear here...'}
+                      </p>
+                      {targetValue && (
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Target: {targetType === 'area' ? 'Area' : 'Country'} - {targetValue}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <Button 
                 onClick={handleSend}
                 disabled={!message || !targetValue}
                 className="w-full"
+                size="lg"
               >
                 <Send className="h-4 w-4 mr-2" />
-                Send Broadcast
+                Send Broadcast Message
               </Button>
             </CardContent>
           </Card>
@@ -174,7 +232,7 @@ export default function Broadcast() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-heading">12</div>
-              <p className="text-xs text-subtext">+3 from yesterday</p>
+              <p className="text-xs text-muted-foreground">+3 from yesterday</p>
             </CardContent>
           </Card>
 
@@ -184,7 +242,7 @@ export default function Broadcast() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-heading">3,248</div>
-              <p className="text-xs text-subtext">Across all messages</p>
+              <p className="text-xs text-muted-foreground">Across all messages</p>
             </CardContent>
           </Card>
 
@@ -193,8 +251,40 @@ export default function Broadcast() {
               <CardTitle className="text-sm">Delivery Rate</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-success">98.5%</div>
-              <p className="text-xs text-subtext">Last 24 hours</p>
+              <div className="text-2xl font-bold text-emerald-600">98.5%</div>
+              <p className="text-xs text-muted-foreground">Last 24 hours</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm">Quick Templates</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full justify-start text-xs"
+                onClick={() => setMessage('Weather alert: Please stay safe and follow local advisories.')}
+              >
+                Weather Alert
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full justify-start text-xs"
+                onClick={() => setMessage('Safety reminder: Please register with local authorities.')}
+              >
+                Safety Reminder
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full justify-start text-xs"
+                onClick={() => setMessage('Traffic advisory: Alternative routes recommended.')}
+              >
+                Traffic Update
+              </Button>
             </CardContent>
           </Card>
         </div>
@@ -203,7 +293,10 @@ export default function Broadcast() {
       {/* Recent Messages */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Broadcasts</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Recent Broadcasts
+          </CardTitle>
           <CardDescription>
             History of sent messages and their delivery status
           </CardDescription>
@@ -211,10 +304,10 @@ export default function Broadcast() {
         <CardContent>
           <div className="space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className="flex items-start justify-between p-4 border rounded-lg">
+              <div key={msg.id} className="flex items-start justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-1 flex-1">
-                  <p className="font-medium text-heading">{msg.message}</p>
-                  <div className="flex items-center gap-4 text-sm text-subtext">
+                  <p className="font-medium text-heading line-clamp-2">{msg.message}</p>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       {msg.targetType === 'area' ? <MapPin className="h-3 w-3" /> : <Globe className="h-3 w-3" />}
                       {msg.targetValue}
@@ -223,12 +316,17 @@ export default function Broadcast() {
                       <Users className="h-3 w-3" />
                       {msg.recipientCount} recipients
                     </div>
-                    <span>{msg.timestamp}</span>
+                    <div className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {msg.timestamp}
+                    </div>
                   </div>
                 </div>
-                <Badge className={getStatusBadge(msg.status)}>
-                  {msg.status}
-                </Badge>
+                <div className="flex flex-col items-end gap-2">
+                  <Badge className={getStatusBadge(msg.status)}>
+                    {msg.status}
+                  </Badge>
+                </div>
               </div>
             ))}
           </div>

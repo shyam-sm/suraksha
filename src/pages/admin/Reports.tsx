@@ -105,15 +105,6 @@ export default function Reports() {
   const [filterType, setFilterType] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [selectedReport, setSelectedReport] = useState<IncidentReport | null>(null);
-  const [showPanicAlert, setShowPanicAlert] = useState(false);
-
-  // Simulate panic button trigger
-  useState(() => {
-    const timer = setTimeout(() => {
-      setShowPanicAlert(true);
-    }, 3000); // Show panic alert after 3 seconds for demo
-    return () => clearTimeout(timer);
-  });
 
   const filteredReports = reports.filter(report => {
     const matchesSearch = 
@@ -459,8 +450,6 @@ export default function Reports() {
         </DialogContent>
       </Dialog>
 
-      {/* Panic Alert Modal */}
-      <Dialog open={showPanicAlert} onOpenChange={setShowPanicAlert}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-danger flex items-center gap-2">
