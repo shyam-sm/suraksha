@@ -12,6 +12,8 @@ import Reviews from '@/pages/admin/Reviews';
 import Reports from '@/pages/admin/Reports';
 import Broadcast from '@/pages/admin/Broadcast';
 import TouristManagement from '@/pages/admin/TouristManagement';
+import Analytics from '@/pages/admin/Analytics';
+import NewsScraper from '@/pages/admin/NewsScraper';
 import TouristHome from '@/pages/tourist/Home';
 import MyDigitalId from '@/pages/tourist/MyDigitalId';
 import TripDetails from '@/pages/tourist/TripDetails';
@@ -29,7 +31,8 @@ function AuthorityRoutes() {
       <Route path="/broadcast" element={<Broadcast />} />
       <Route path="/tourists" element={<TouristManagement />} />
       <Route path="/alerts" element={<div className="p-8 text-center">Alerts & Incidents - Coming Soon</div>} />
-      <Route path="/analytics" element={<div className="p-8 text-center">Analytics - Coming Soon</div>} />
+      <Route path="/analytics" element={<Analytics />} />
+      <Route path="/news-scraper" element={<NewsScraper />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<NotFound />} />
