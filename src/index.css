@@ -5,34 +5,34 @@
 /* Gov-Tech Tourism Safety App Design System */
 
 @layer base {
-:root {
-    /* Admin Dashboard Color System - matches requested palette */
-    --background: 244 244 246; /* #F3F4F6 */
-    --foreground: 17 24 39; /* #111827 */
+  :root {
+    /* Government Trust Theme */
+    --background: 210 20% 98%;
+    --foreground: 220 13% 9%;
     
-    --card: 255 255 255;
-    --card-foreground: 17 24 39;
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 9%;
     
-    --popover: 255 255 255;
-    --popover-foreground: 17 24 39;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 9%;
     
-    /* Primary: Deep Blue #1E3A8A */
-    --primary: 230 81% 32%;
-    --primary-foreground: 255 255 255;
-    --primary-hover: 230 81% 28%;
+    /* Primary: Deep Blue for Trust/Security */
+    --primary: 217 91% 32%;
+    --primary-foreground: 0 0% 98%;
+    --primary-hover: 217 91% 28%;
     
-    /* Secondary: Emerald #059669 */
-    --secondary: 158 64% 52%;
-    --secondary-foreground: 255 255 255;
-    --secondary-hover: 158 64% 48%;
+    /* Secondary: Emerald Green for Safety/Action */
+    --secondary: 158 64% 20%;
+    --secondary-foreground: 0 0% 98%;
+    --secondary-hover: 158 64% 16%;
     
     /* Alert Colors */
-    --warning: 45 93% 47%; /* Amber #F59E0B */
-    --warning-foreground: 17 24 39;
-    --danger: 0 84% 60%; /* Red #DC2626 */
-    --danger-foreground: 255 255 255;
-    --success: 158 64% 52%; /* Emerald #059669 */
-    --success-foreground: 255 255 255;
+    --warning: 45 93% 47%;
+    --warning-foreground: 26 83% 14%;
+    --danger: 0 84% 60%;
+    --danger-foreground: 0 0% 98%;
+    --success: 158 64% 52%;
+    --success-foreground: 0 0% 98%;
     
     /* Backgrounds */
     --muted: 210 40% 96%;
