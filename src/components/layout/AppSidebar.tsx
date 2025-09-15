@@ -11,6 +11,8 @@ import {
   Calendar,
   User,
   QrCode,
+  Radio,
+  Star,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -29,10 +31,13 @@ import { AuthService } from '@/lib/auth';
 // Navigation items for different user roles
 const authorityNavItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },
+  { title: 'Map & Geofences', url: '/map', icon: MapPin },
+  { title: 'Reviews', url: '/reviews', icon: Star },
+  { title: 'Reports', url: '/reports', icon: FileText },
+  { title: 'Broadcast', url: '/broadcast', icon: Radio },
   { title: 'Tourist Management', url: '/tourists', icon: Users },
   { title: 'Alerts & Incidents', url: '/alerts', icon: AlertTriangle },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
-  { title: 'Reports', url: '/reports', icon: FileText },
 ];
 
 const touristNavItems = [
