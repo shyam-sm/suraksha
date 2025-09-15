@@ -449,48 +449,6 @@ export default function Reports() {
           )}
         </DialogContent>
       </Dialog>
-
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-danger flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              PANIC ALERT!
-            </DialogTitle>
-          </DialogHeader>
-          
-          <Alert className="border-danger bg-danger/10">
-            <AlertTriangle className="h-4 w-4 text-danger" />
-            <AlertDescription className="text-danger font-medium">
-              Emergency panic button pressed by Tourist ID: TID-006
-            </AlertDescription>
-          </Alert>
-
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm">Sarah Williams (UK Citizen)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm">Last known location: Old Delhi Market, Delhi</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm">Alert triggered: {new Date().toLocaleTimeString()}</span>
-            </div>
-          </div>
-
-          <div className="flex gap-2 pt-4">
-            <Button className="flex-1 bg-danger hover:bg-danger/90">
-              <Phone className="h-4 w-4 mr-2" />
-              Call Tourist
-            </Button>
-            <Button variant="outline" className="flex-1">
-              Dispatch Unit
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
