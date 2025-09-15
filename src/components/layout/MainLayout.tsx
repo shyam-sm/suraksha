@@ -7,6 +7,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Pages
 import AdminDashboard from '@/pages/admin/Dashboard';
+import Map from '@/pages/admin/Map';
+import Reviews from '@/pages/admin/Reviews';
+import Reports from '@/pages/admin/Reports';
 import Broadcast from '@/pages/admin/Broadcast';
 import TouristManagement from '@/pages/admin/TouristManagement';
 import TouristHome from '@/pages/tourist/Home';
@@ -20,11 +23,13 @@ function AuthorityRoutes() {
   return (
     <Routes>
       <Route path="/dashboard" element={<AdminDashboard />} />
-      <Route path="/tourists" element={<TouristManagement />} />
+      <Route path="/map" element={<Map />} />
+      <Route path="/reviews" element={<Reviews />} />
+      <Route path="/reports" element={<Reports />} />
       <Route path="/broadcast" element={<Broadcast />} />
+      <Route path="/tourists" element={<TouristManagement />} />
       <Route path="/alerts" element={<div className="p-8 text-center">Alerts & Incidents - Coming Soon</div>} />
       <Route path="/analytics" element={<div className="p-8 text-center">Analytics - Coming Soon</div>} />
-      <Route path="/reports" element={<div className="p-8 text-center">Reports - Coming Soon</div>} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<NotFound />} />
