@@ -6,14 +6,13 @@ import { AuthService } from '@/lib/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Pages
-import AdminDashboard from '@/pages/admin/Dashboard';
-import Map from '@/pages/admin/Map';
-import Reviews from '@/pages/admin/Reviews';
-import Reports from '@/pages/admin/Reports';
-import Broadcast from '@/pages/admin/Broadcast';
-import TouristManagement from '@/pages/admin/TouristManagement';
-import Analytics from '@/pages/admin/Analytics';
-import NewsScraper from '@/pages/admin/NewsScraper';
+import PoliceDashboard from '@/pages/admin/PoliceDashboard';
+import PoliceStations from '@/pages/admin/PoliceStations';
+import OfficerManagement from '@/pages/admin/OfficerManagement';
+import IncidentReports from '@/pages/admin/IncidentReports';
+import PanicAlerts from '@/pages/admin/PanicAlerts';
+import AnalyticsLogs from '@/pages/admin/AnalyticsLogs';
+import PoliceSettings from '@/pages/admin/PoliceSettings';
 import TouristHome from '@/pages/tourist/Home';
 import MyDigitalId from '@/pages/tourist/MyDigitalId';
 import TripDetails from '@/pages/tourist/TripDetails';
@@ -24,16 +23,13 @@ import NotFound from '@/pages/NotFound';
 function AuthorityRoutes() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<AdminDashboard />} />
-      <Route path="/map" element={<Map />} />
-      <Route path="/reviews" element={<Reviews />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/broadcast" element={<Broadcast />} />
-      <Route path="/tourists" element={<TouristManagement />} />
-      <Route path="/alerts" element={<div className="p-8 text-center">Alerts & Incidents - Coming Soon</div>} />
-      <Route path="/analytics" element={<Analytics />} />
-      <Route path="/news-scraper" element={<NewsScraper />} />
-      <Route path="/settings" element={<Settings />} />
+      <Route path="/dashboard" element={<PoliceDashboard />} />
+      <Route path="/stations" element={<PoliceStations />} />
+      <Route path="/officers" element={<OfficerManagement />} />
+      <Route path="/incidents" element={<IncidentReports />} />
+      <Route path="/alerts" element={<PanicAlerts />} />
+      <Route path="/analytics" element={<AnalyticsLogs />} />
+      <Route path="/settings" element={<PoliceSettings />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -30,16 +30,14 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthService } from '@/lib/auth';
 
-// Navigation items for different user roles
+// Navigation items for police panel
 const authorityNavItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },
-  { title: 'Map & Geofences', url: '/map', icon: MapPin },
-  { title: 'Reviews', url: '/reviews', icon: Star },
-  { title: 'Reports', url: '/reports', icon: FileText },
-  { title: 'Broadcast', url: '/broadcast', icon: Radio },
-  { title: 'Tourist Management', url: '/tourists', icon: Users },
-  { title: 'Analytics', url: '/analytics', icon: TrendingUp },
-  { title: 'News Scraper', url: '/news-scraper', icon: Globe },
+  { title: 'Police Stations', url: '/stations', icon: Shield },
+  { title: 'Officer Management', url: '/officers', icon: Users },
+  { title: 'Incident Reports', url: '/incidents', icon: FileText },
+  { title: 'Panic Alerts', url: '/alerts', icon: AlertTriangle },
+  { title: 'Analytics & Logs', url: '/analytics', icon: TrendingUp },
 ];
 
 const touristNavItems = [
@@ -83,9 +81,9 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 text-xs font-medium text-sidebar-foreground/70">
-            {AuthService.isAuthority(user) ? 'Authority Portal' : 'Tourist Portal'}
-          </SidebarGroupLabel>
+            <SidebarGroupLabel className="px-2 text-xs font-medium text-sidebar-foreground/70">
+              {AuthService.isAuthority(user) ? 'Police Panel' : 'Tourist Portal'}
+            </SidebarGroupLabel>
           
           <SidebarGroupContent>
             <SidebarMenu>
