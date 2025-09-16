@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Map as MapIcon, Plus, Upload, Edit, Trash2, Save, X, FileUp } from 'lucide-react';
+import { Map as MapIcon, Plus, Upload, Edit, Trash2, Save, X } from 'lucide-react';
+
+// Fix leaflet icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 interface Geofence {
   id: string;
@@ -162,32 +172,50 @@ export default function Map() {
                 Interactive Map
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-full">
-              <div className="w-full h-full bg-gradient-to-br from-blue-50 to-green-50 rounded-lg flex items-center justify-center border-2 border-dashed border-border relative overflow-hidden">
-                {/* Mock Map Interface */}
-                <div className="absolute inset-0 opacity-40"></div>
-                
-                {/* Map Overlay with Geofences */}
-                <div className="relative w-full h-full p-4">
-                  {/* Simulated geofence markers */}
-                  <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-emerald-200/50 rounded-full border-2 border-emerald-500 flex items-center justify-center">
-                    <span className="text-xs font-medium text-emerald-700">Safe Zone</span>
-                  </div>
-                  <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-red-200/50 rounded-full border-2 border-red-500 flex items-center justify-center">
-                    <span className="text-xs font-medium text-red-700">Danger</span>
-                  </div>
-                  <div className="absolute bottom-1/3 left-1/2 w-18 h-18 bg-amber-200/50 rounded-full border-2 border-amber-500 flex items-center justify-center">
-                    <span className="text-xs font-medium text-amber-700">Risky</span>
-                  </div>
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-background/10 to-transparent rounded-lg pointer-events-none"></div>
-                
-                <div className="text-center space-y-2 z-10">
-                  <MapIcon className="h-12 w-12 mx-auto text-muted-foreground" />
-                  <p className="text-muted-foreground font-medium">Interactive Map View</p>
-                  <p className="text-sm text-muted-foreground">Geofence visualization and editing tools</p>
-                </div>
+            <CardContent className="h-full p-0">
+              <div className="w-full h-full rounded-lg overflow-hidden">
+                <MapContainer
+                  center={[28.6139, 77.2090]} // Delhi coordinates
+                  zoom={6}
+                  style={{ height: '100%', width: '100%' }}
+                  className="rounded-lg"
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  
+                  {/* Geofence markers */}
+                  {geofences.map((geofence) => {
+                    const [lat, lng] = geofence.coordinates.split(', ').map(Number);
+                    const color = geofence.type === 'safe' ? 'green' : geofence.type === 'risky' ? 'orange' : 'red';
+                    
+                    return (
+                      <Marker key={geofence.id} position={[lat, lng]}>
+                        <Popup>
+                          <div className="p-2">
+                            <h3 className="font-semibold">{geofence.name}</h3>
+                            <p className="text-sm">Type: {geofence.type}</p>
+                            <p className="text-sm">Location: {geofence.state}, {geofence.district}</p>
+                            <Button size="sm" onClick={() => handleEditGeofence(geofence)} className="mt-2">
+                              Edit
+                            </Button>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    );
+                  })}
+                  
+                  {/* Example geofence polygons */}
+                  <Polygon
+                    positions={[[26.5, 93.1], [26.6, 93.1], [26.6, 93.2], [26.5, 93.2]]}
+                    pathOptions={{ color: 'green', fillColor: 'green', fillOpacity: 0.2 }}
+                  />
+                  <Polygon
+                    positions={[[26.1, 91.7], [26.2, 91.7], [26.2, 91.8], [26.1, 91.8]]}
+                    pathOptions={{ color: 'red', fillColor: 'red', fillOpacity: 0.2 }}
+                  />
+                </MapContainer>
               </div>
             </CardContent>
           </Card>
