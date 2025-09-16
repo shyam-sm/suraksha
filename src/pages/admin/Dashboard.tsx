@@ -12,7 +12,12 @@ import {
   AlertCircle,
   BarChart3,
   PieChart,
-  Monitor
+  Monitor,
+  Globe,
+  MapPin,
+  FileText,
+  AlertTriangle,
+  RefreshCw
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -87,7 +92,8 @@ const systemReports = [
     description: 'All systems operating normally',
     timestamp: '2 hours ago',
     status: 'healthy',
-    icon: CheckCircle
+    icon: CheckCircle,
+    details: 'CPU: 23%, Memory: 67%, Storage: 45%'
   },
   {
     id: '2', 
@@ -95,7 +101,8 @@ const systemReports = [
     description: 'System performance within optimal range',
     timestamp: '4 hours ago',
     status: 'healthy',
-    icon: BarChart3
+    icon: BarChart3,
+    details: 'Response time: 120ms, Throughput: 1.2k/sec'
   },
   {
     id: '3',
@@ -103,7 +110,8 @@ const systemReports = [
     description: 'Automated backup completed successfully',
     timestamp: '6 hours ago',
     status: 'healthy',
-    icon: Database
+    icon: Database,
+    details: 'Size: 2.3GB, Duration: 3min 45sec'
   },
   {
     id: '4',
@@ -111,7 +119,65 @@ const systemReports = [
     description: 'No vulnerabilities detected',
     timestamp: '8 hours ago',
     status: 'healthy',
-    icon: Shield
+    icon: Shield,
+    details: 'Scanned: 15,432 files, Threats: 0'
+  },
+  {
+    id: '5',
+    title: 'Tourist Registration Spike',
+    description: 'Higher than normal registration activity',
+    timestamp: '1 hour ago',
+    status: 'warning',
+    icon: AlertTriangle,
+    details: '+45% increase from yesterday'
+  },
+  {
+    id: '6',
+    title: 'Geolocation Services',
+    description: 'All location services operational',
+    timestamp: '3 hours ago',
+    status: 'healthy',
+    icon: MapPin,
+    details: '99.8% accuracy rate maintained'
+  }
+];
+
+const additionalMetrics = [
+  {
+    title: 'Total Tourists',
+    value: '15,642',
+    change: '+8.2%',
+    trend: 'up',
+    icon: Users,
+    color: 'text-primary',
+    status: 'healthy'
+  },
+  {
+    title: 'Reviews Processed',
+    value: '1,234',
+    change: '+15%',
+    trend: 'up',
+    icon: FileText,
+    color: 'text-secondary',
+    status: 'healthy'
+  },
+  {
+    title: 'Locations Monitored',
+    value: '89',
+    change: '+2',
+    trend: 'up',
+    icon: Globe,
+    color: 'text-warning',
+    status: 'healthy'
+  },
+  {
+    title: 'Data Sync Rate',
+    value: '99.7%',
+    change: '+0.3%',
+    trend: 'up',
+    icon: RefreshCw,
+    color: 'text-success',
+    status: 'healthy'
   }
 ];
 
@@ -168,6 +234,31 @@ export default function AdminDashboard() {
                     metric.status === 'warning' ? 'bg-warning' : 'bg-danger'
                   }`} />
                 </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{metric.value}</div>
+                <p className={`text-xs ${metric.trend === 'up' ? 'text-success' : 'text-danger'}`}>
+                  {metric.change} from last period
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Additional Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {additionalMetrics.map((metric, index) => (
+          <motion.div
+            key={metric.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 + index * 0.1 }}
+          >
+            <Card className="hover:shadow-elevated transition-shadow bg-gradient-to-br from-background to-muted/20">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
+                <metric.icon className={`h-4 w-4 ${metric.color}`} />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{metric.value}</div>
@@ -262,7 +353,7 @@ export default function AdminDashboard() {
               </CardTitle>
               <CardDescription>Latest system health reports and analytics</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 max-h-[600px] overflow-y-auto">
               {systemReports.map((report, index) => {
                 const ReportIcon = report.icon;
                 return (
@@ -271,27 +362,36 @@ export default function AdminDashboard() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    className="p-3 rounded-lg border border-border bg-background/50"
+                    className="p-4 rounded-lg border border-border bg-background/50 hover:bg-background/80 transition-colors"
                   >
                     <div className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
-                        <ReportIcon className={`w-5 h-5 ${getStatusColor(report.status)}`} />
+                        <div className={`p-2 rounded-full ${
+                          report.status === 'healthy' ? 'bg-success/10' : 
+                          report.status === 'warning' ? 'bg-warning/10' : 'bg-danger/10'
+                        }`}>
+                          <ReportIcon className={`w-4 h-4 ${getStatusColor(report.status)}`} />
+                        </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
+                        <div className="flex items-center space-x-2 mb-2">
                           <p className="text-sm font-medium">{report.title}</p>
                           <Badge 
                             variant="outline" 
                             className={`text-xs ${
                               report.status === 'healthy' ? 'bg-success/10 text-success border-success/20' : 
-                              'bg-warning/10 text-warning border-warning/20'
+                              report.status === 'warning' ? 'bg-warning/10 text-warning border-warning/20' :
+                              'bg-danger/10 text-danger border-danger/20'
                             }`}
                           >
                             {report.status}
                           </Badge>
                         </div>
-                        <p className="text-xs text-muted-foreground">{report.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{report.timestamp}</p>
+                        <p className="text-xs text-muted-foreground mb-1">{report.description}</p>
+                        {report.details && (
+                          <p className="text-xs text-primary font-medium mb-1">{report.details}</p>
+                        )}
+                        <p className="text-xs text-muted-foreground">{report.timestamp}</p>
                       </div>
                     </div>
                   </motion.div>
