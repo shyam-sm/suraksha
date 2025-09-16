@@ -30,8 +30,16 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthService } from '@/lib/auth';
 
+// Navigation items for admin panel
+const adminNavItems = [
+  { title: 'Dashboard', url: '/dashboard', icon: Home },
+  { title: 'Tourist Management', url: '/tourist-management', icon: Users },
+  { title: 'Analytics', url: '/analytics', icon: TrendingUp },
+  { title: 'Reviews', url: '/reviews', icon: Star },
+];
+
 // Navigation items for police panel
-const authorityNavItems = [
+const policeNavItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },
   { title: 'Police Stations', url: '/stations', icon: Shield },
   { title: 'Officer Management', url: '/officers', icon: Users },
@@ -63,8 +71,10 @@ export function AppSidebar() {
   const getNavItems = () => {
     if (!user) return [];
     
-    if (AuthService.isAuthority(user)) {
-      return [...authorityNavItems, ...sharedNavItems];
+    if (user.role === 'admin') {
+      return [...adminNavItems, ...sharedNavItems];
+    } else if (user.role === 'police') {
+      return [...policeNavItems, ...sharedNavItems];
     } else {
       return [...touristNavItems, ...sharedNavItems];
     }
@@ -82,7 +92,8 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
             <SidebarGroupLabel className="px-2 text-xs font-medium text-sidebar-foreground/70">
-              {AuthService.isAuthority(user) ? 'Police Panel' : 'Tourist Portal'}
+              {user?.role === 'admin' ? 'Admin Panel' : 
+               user?.role === 'police' ? 'Police Panel' : 'Tourist Portal'}
             </SidebarGroupLabel>
           
           <SidebarGroupContent>
