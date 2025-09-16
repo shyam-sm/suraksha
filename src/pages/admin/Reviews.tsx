@@ -323,11 +323,10 @@ export default function Reviews() {
                   <TableHead>Tourist ID</TableHead>
                   <TableHead>Location</TableHead>
                   <TableHead>Timestamp</TableHead>
-                  <TableHead>Review Text</TableHead>
+                  <TableHead className="w-1/3">Review Text</TableHead>
                   <TableHead>Rating</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -354,8 +353,8 @@ export default function Reviews() {
                         {review.timestamp}
                       </div>
                     </TableCell>
-                    <TableCell className="max-w-md">
-                      <p className="text-sm line-clamp-2">{review.reviewText}</p>
+                    <TableCell className="max-w-lg">
+                      <p className="text-sm">{review.reviewText}</p>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
@@ -369,26 +368,17 @@ export default function Reviews() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusBadge(review.status)}>
-                        {review.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-1">
-                        {review.status === 'pending' && (
-                          <>
-                            <Button variant="outline" size="sm" className="text-emerald-600">
-                              Approve
-                            </Button>
-                            <Button variant="outline" size="sm" className="text-red-600">
-                              Reject
-                            </Button>
-                          </>
-                        )}
-                        <Button variant="ghost" size="sm">
-                          View
-                        </Button>
-                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={`${
+                          review.status === 'approved' 
+                            ? 'text-emerald-600 hover:text-emerald-700' 
+                            : 'text-red-600 hover:text-red-700'
+                        }`}
+                      >
+                        {review.status === 'approved' ? 'Approved' : 'Hidden'}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

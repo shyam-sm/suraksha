@@ -1,132 +1,131 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Users, 
-  AlertTriangle, 
   Shield, 
-  MapPin,
   Activity,
   TrendingUp,
   Clock,
-  Phone
+  Server,
+  Database,
+  Wifi,
+  CheckCircle,
+  AlertCircle,
+  BarChart3,
+  PieChart,
+  Monitor
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import dashboardMap from '@/assets/dashboard-map.png';
 
-interface StatCard {
+interface SystemMetric {
   title: string;
   value: string;
   change: string;
   trend: 'up' | 'down';
   icon: React.ElementType;
   color: string;
+  status: 'healthy' | 'warning' | 'critical';
 }
 
-interface Alert {
-  id: string;
-  type: 'emergency' | 'warning' | 'info';
-  message: string;
-  location: string;
-  time: string;
-  touristId?: string;
+interface ChartData {
+  name: string;
+  value: number;
+  color: string;
 }
 
-const statCards: StatCard[] = [
+const systemMetrics: SystemMetric[] = [
   {
-    title: 'Active Tourists',
+    title: 'System Uptime',
+    value: '99.9%',
+    change: '+0.1%',
+    trend: 'up',
+    icon: Server,
+    color: 'text-success',
+    status: 'healthy'
+  },
+  {
+    title: 'Active Users',
     value: '2,847',
     change: '+12%',
     trend: 'up',
     icon: Users,
-    color: 'text-primary'
+    color: 'text-primary',
+    status: 'healthy'
   },
   {
-    title: 'Alerts Today',
-    value: '23',
-    change: '-8%',
-    trend: 'down',
-    icon: AlertTriangle,
-    color: 'text-warning'
-  },
-  {
-    title: 'Safety Score',
-    value: '94.2%',
+    title: 'Database Performance',
+    value: '98.5%',
     change: '+2.1%',
     trend: 'up',
-    icon: Shield,
-    color: 'text-success'
+    icon: Database,
+    color: 'text-success',
+    status: 'healthy'
   },
   {
-    title: 'High-Risk Zones',
-    value: '4',
-    change: '0',
+    title: 'Network Latency',
+    value: '12ms',
+    change: '-5ms',
     trend: 'up',
-    icon: MapPin,
-    color: 'text-danger'
+    icon: Wifi,
+    color: 'text-success',
+    status: 'healthy'
   }
 ];
 
-const recentAlerts: Alert[] = [
+const chartData: ChartData[] = [
+  { name: 'Tourism Portal', value: 65, color: 'hsl(var(--primary))' },
+  { name: 'ID Verification', value: 88, color: 'hsl(var(--success))' },
+  { name: 'Safety Monitoring', value: 94, color: 'hsl(var(--warning))' },
+  { name: 'Review System', value: 76, color: 'hsl(var(--secondary))' }
+];
+
+const systemReports = [
   {
     id: '1',
-    type: 'emergency',
-    message: 'Panic button activated',
-    location: 'Red Fort, Delhi',
-    time: '2 min ago',
-    touristId: 'TRP-2024-001'
+    title: 'Daily System Health Report',
+    description: 'All systems operating normally',
+    timestamp: '2 hours ago',
+    status: 'healthy',
+    icon: CheckCircle
   },
   {
-    id: '2',
-    type: 'warning',
-    message: 'Tourist in restricted area',
-    location: 'Border Zone, Kashmir',
-    time: '15 min ago',
-    touristId: 'TRP-2024-089'
+    id: '2', 
+    title: 'Performance Analytics',
+    description: 'System performance within optimal range',
+    timestamp: '4 hours ago',
+    status: 'healthy',
+    icon: BarChart3
   },
   {
     id: '3',
-    type: 'info',
-    message: 'Large group detected',
-    location: 'Gateway of India, Mumbai',
-    time: '1 hour ago'
+    title: 'Database Backup Complete',
+    description: 'Automated backup completed successfully',
+    timestamp: '6 hours ago',
+    status: 'healthy',
+    icon: Database
   },
   {
     id: '4',
-    type: 'warning',
-    message: 'Weather alert - Heavy rain',
-    location: 'Munnar, Kerala',
-    time: '2 hours ago'
+    title: 'Security Scan',
+    description: 'No vulnerabilities detected',
+    timestamp: '8 hours ago',
+    status: 'healthy',
+    icon: Shield
   }
 ];
 
 export default function AdminDashboard() {
-  const [selectedView, setSelectedView] = useState<'tourists' | 'alerts' | 'routes'>('tourists');
-
-  const getAlertBadgeVariant = (type: Alert['type']) => {
-    switch (type) {
-      case 'emergency':
-        return 'destructive';
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return 'text-success';
       case 'warning':
-        return 'default';
-      case 'info':
-        return 'secondary';
+        return 'text-warning';
+      case 'critical':
+        return 'text-danger';
       default:
-        return 'outline';
-    }
-  };
-
-  const getAlertIcon = (type: Alert['type']) => {
-    switch (type) {
-      case 'emergency':
-        return Phone;
-      case 'warning':
-        return AlertTriangle;
-      case 'info':
-        return Activity;
-      default:
-        return Activity;
+        return 'text-subtext';
     }
   };
 
@@ -150,24 +149,30 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
+      {/* System Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat, index) => (
+        {systemMetrics.map((metric, index) => (
           <motion.div
-            key={stat.title}
+            key={metric.title}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
           >
             <Card className="hover:shadow-elevated transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
+                <div className="flex items-center space-x-2">
+                  <metric.icon className={`h-4 w-4 ${metric.color}`} />
+                  <div className={`w-2 h-2 rounded-full ${
+                    metric.status === 'healthy' ? 'bg-success' : 
+                    metric.status === 'warning' ? 'bg-warning' : 'bg-danger'
+                  }`} />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className={`text-xs ${stat.trend === 'up' ? 'text-success' : 'text-danger'}`}>
-                  {stat.change} from last period
+                <div className="text-2xl font-bold">{metric.value}</div>
+                <p className={`text-xs ${metric.trend === 'up' ? 'text-success' : 'text-danger'}`}>
+                  {metric.change} from last period
                 </p>
               </CardContent>
             </Card>
@@ -176,7 +181,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Interactive Map */}
+        {/* System Performance Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -187,71 +192,63 @@ export default function AdminDashboard() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Live Tourism Map</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    System Performance Overview
+                  </CardTitle>
                   <CardDescription>
-                    Real-time tourist locations and safety zones
+                    Real-time monitoring of all system functions
                   </CardDescription>
                 </div>
-                <div className="flex space-x-2">
-                  {(['tourists', 'alerts', 'routes'] as const).map((view) => (
-                    <Button
-                      key={view}
-                      variant={selectedView === view ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setSelectedView(view)}
-                      className="capitalize"
-                    >
-                      {view}
-                    </Button>
-                  ))}
-                </div>
+                <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                  <Monitor className="w-3 h-3 mr-1" />
+                  All Systems Operational
+                </Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="relative rounded-lg overflow-hidden bg-muted h-96">
-                <img 
-                  src={dashboardMap} 
-                  alt="Tourism Safety Map" 
-                  className="w-full h-full object-cover"
-                />
-                {/* Overlay indicators */}
-                <div className="absolute inset-0 p-4">
-                  <div className="flex space-x-4 mb-4">
-                    <div className="flex items-center space-x-2 bg-background/90 rounded-lg px-3 py-1">
-                      <div className="w-3 h-3 rounded-full bg-success"></div>
-                      <span className="text-xs">Safe Zones</span>
-                    </div>
-                    <div className="flex items-center space-x-2 bg-background/90 rounded-lg px-3 py-1">
-                      <div className="w-3 h-3 rounded-full bg-warning"></div>
-                      <span className="text-xs">Caution Areas</span>
-                    </div>
-                    <div className="flex items-center space-x-2 bg-background/90 rounded-lg px-3 py-1">
-                      <div className="w-3 h-3 rounded-full bg-danger"></div>
-                      <span className="text-xs">Restricted Zones</span>
-                    </div>
-                  </div>
-                  
-                  {/* Simulated location pins */}
+              <div className="space-y-6">
+                {chartData.map((item, index) => (
                   <motion.div
-                    className="absolute top-20 left-32 w-4 h-4 bg-primary rounded-full shadow-glow"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                  <motion.div
-                    className="absolute top-40 right-28 w-4 h-4 bg-success rounded-full"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
-                  <motion.div
-                    className="absolute bottom-32 left-20 w-4 h-4 bg-danger rounded-full animate-pulse-danger"
-                  />
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                    className="space-y-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{item.name}</span>
+                      <span className="text-sm text-muted-foreground">{item.value}%</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <motion.div
+                        className="h-2 rounded-full"
+                        style={{ backgroundColor: item.color }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${item.value}%` }}
+                        transition={{ delay: 0.6 + index * 0.1, duration: 1 }}
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Performance Summary */}
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                <div className="text-center p-4 bg-success/10 rounded-lg">
+                  <div className="text-2xl font-bold text-success">98.2%</div>
+                  <div className="text-sm text-muted-foreground">Overall Performance</div>
+                </div>
+                <div className="text-center p-4 bg-primary/10 rounded-lg">
+                  <div className="text-2xl font-bold text-primary">24/7</div>
+                  <div className="text-sm text-muted-foreground">System Availability</div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        {/* Live Alerts Feed */}
+        {/* System Reports Feed */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -260,51 +257,48 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <AlertTriangle className="w-5 h-5 mr-2 text-warning" />
-                Live Alerts Feed
+                <PieChart className="w-5 h-5 mr-2 text-primary" />
+                System Reports
               </CardTitle>
-              <CardDescription>Recent incidents and notifications</CardDescription>
+              <CardDescription>Latest system health reports and analytics</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {recentAlerts.map((alert, index) => {
-                const AlertIcon = getAlertIcon(alert.type);
+              {systemReports.map((report, index) => {
+                const ReportIcon = report.icon;
                 return (
                   <motion.div
-                    key={alert.id}
+                    key={report.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
-                    className={`p-3 rounded-lg border-l-4 ${
-                      alert.type === 'emergency' 
-                        ? 'border-danger bg-danger/5' 
-                        : alert.type === 'warning'
-                        ? 'border-warning bg-warning/5'
-                        : 'border-primary bg-primary/5'
-                    }`}
+                    className="p-3 rounded-lg border border-border bg-background/50"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
+                    <div className="flex items-start space-x-3">
+                      <div className="flex-shrink-0">
+                        <ReportIcon className={`w-5 h-5 ${getStatusColor(report.status)}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center space-x-2 mb-1">
-                          <AlertIcon className="w-4 h-4" />
-                          <Badge variant={getAlertBadgeVariant(alert.type)} className="text-xs">
-                            {alert.type.toUpperCase()}
+                          <p className="text-sm font-medium">{report.title}</p>
+                          <Badge 
+                            variant="outline" 
+                            className={`text-xs ${
+                              report.status === 'healthy' ? 'bg-success/10 text-success border-success/20' : 
+                              'bg-warning/10 text-warning border-warning/20'
+                            }`}
+                          >
+                            {report.status}
                           </Badge>
                         </div>
-                        <p className="text-sm font-medium">{alert.message}</p>
-                        <div className="flex items-center justify-between mt-2 text-xs text-subtext">
-                          <span>{alert.location}</span>
-                          <span>{alert.time}</span>
-                        </div>
-                        {alert.touristId && (
-                          <p className="text-xs text-primary mt-1">ID: {alert.touristId}</p>
-                        )}
+                        <p className="text-xs text-muted-foreground">{report.description}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{report.timestamp}</p>
                       </div>
                     </div>
                   </motion.div>
                 );
               })}
               <Button variant="outline" className="w-full mt-4">
-                View All Alerts
+                View All Reports
               </Button>
             </CardContent>
           </Card>
@@ -345,10 +339,10 @@ export default function AdminDashboard() {
         <Card className="bg-gradient-alert text-danger-foreground">
           <CardContent className="p-6">
             <div className="flex items-center space-x-4">
-              <AlertTriangle className="w-8 h-8" />
+              <Monitor className="w-8 h-8" />
               <div>
-                <h3 className="font-semibold">Emergency Response</h3>
-                <p className="text-sm opacity-90">Manage critical incidents</p>
+                <h3 className="font-semibold">System Monitoring</h3>
+                <p className="text-sm opacity-90">Real-time system health tracking</p>
               </div>
             </div>
           </CardContent>
