@@ -6,16 +6,19 @@ import { AuthService } from '@/lib/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Admin Pages
-import AdminDashboard from '@/pages/admin/Dashboard';
-import TouristManagement from '@/pages/admin/TouristManagement';
-import Analytics from '@/pages/admin/Analytics';
+import Dashboard from '@/pages/admin/Dashboard';
+import Map from '@/pages/admin/Map';
 import Reviews from '@/pages/admin/Reviews';
+import Reports from '@/pages/admin/Reports';
+import Broadcast from '@/pages/admin/Broadcast';
+import TouristManagement from '@/pages/admin/TouristManagement';
+import IncidentReports from '@/pages/admin/IncidentReports';
+import Analytics from '@/pages/admin/Analytics';
 
 // Police Pages
 import PoliceDashboard from '@/pages/admin/PoliceDashboard';
 import PoliceStations from '@/pages/admin/PoliceStations';
 import OfficerManagement from '@/pages/admin/OfficerManagement';
-import IncidentReports from '@/pages/admin/IncidentReports';
 import PanicAlerts from '@/pages/admin/PanicAlerts';
 import AnalyticsLogs from '@/pages/admin/AnalyticsLogs';
 import PoliceSettings from '@/pages/admin/PoliceSettings';
@@ -30,10 +33,14 @@ function AdminRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/dashboard" element={<AdminDashboard />} />
-      <Route path="/tourist-management" element={<TouristManagement />} />
-      <Route path="/analytics" element={<Analytics />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/map" element={<Map />} />
       <Route path="/reviews" element={<Reviews />} />
+      <Route path="/reports" element={<Reports />} />
+      <Route path="/broadcast" element={<Broadcast />} />
+      <Route path="/tourist-management" element={<TouristManagement />} />
+      <Route path="/incidents" element={<IncidentReports />} />
+      <Route path="/analytics" element={<Analytics />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -33,9 +33,13 @@ import { AuthService } from '@/lib/auth';
 // Navigation items for admin panel
 const adminNavItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },
-  { title: 'Tourist Management', url: '/tourist-management', icon: Users },
-  { title: 'Analytics', url: '/analytics', icon: TrendingUp },
+  { title: 'Map & Geofences', url: '/map', icon: MapPin },
   { title: 'Reviews', url: '/reviews', icon: Star },
+  { title: 'Reports', url: '/reports', icon: FileText },
+  { title: 'Broadcast', url: '/broadcast', icon: Radio },
+  { title: 'Tourist Management', url: '/tourist-management', icon: Users },
+  { title: 'Alerts & Incidents', url: '/incidents', icon: AlertTriangle },
+  { title: 'Analytics', url: '/analytics', icon: TrendingUp },
 ];
 
 // Navigation items for police panel
