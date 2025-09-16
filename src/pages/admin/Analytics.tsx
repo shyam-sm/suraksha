@@ -3,8 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CalendarIcon, Download, Save, Filter, TrendingUp, MapPin, AlertTriangle, Users, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -47,6 +50,24 @@ export default function Analytics() {
       icon: FileText,
       color: 'text-red-600'
     }
+  ];
+
+  // Sample chart data
+  const incidentTrendData = [
+    { month: 'Jan', incidents: 45, resolved: 42 },
+    { month: 'Feb', incidents: 38, resolved: 35 },
+    { month: 'Mar', incidents: 52, resolved: 48 },
+    { month: 'Apr', incidents: 41, resolved: 39 },
+    { month: 'May', incidents: 35, resolved: 34 },
+    { month: 'Jun', incidents: 28, resolved: 27 }
+  ];
+
+  const regionData = [
+    { region: 'Mumbai', reports: 45, tourists: 1200 },
+    { region: 'Delhi', reports: 38, tourists: 980 },
+    { region: 'Goa', reports: 22, tourists: 756 },
+    { region: 'Kerala', reports: 18, tourists: 645 },
+    { region: 'Rajasthan', reports: 35, tourists: 890 }
   ];
 
   // Sample recent items data
@@ -217,7 +238,7 @@ export default function Analytics() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Charts Section - Simplified for now */}
+          {/* Charts Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Incident Trends */}
             <Card>
@@ -225,13 +246,17 @@ export default function Analytics() {
                 <CardTitle>Incident Trends (Last 6 Months)</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
-                  <div className="text-center">
-                    <TrendingUp className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-lg font-medium text-foreground">Chart Data Loading</p>
-                    <p className="text-sm text-muted-foreground">Incident trends visualization</p>
-                  </div>
-                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={incidentTrendData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="incidents" stroke="#dc2626" strokeWidth={2} />
+                    <Line type="monotone" dataKey="resolved" stroke="#059669" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
@@ -241,13 +266,17 @@ export default function Analytics() {
                 <CardTitle>Regional Report Analysis</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-center h-64 bg-muted/20 rounded-lg">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-lg font-medium text-foreground">Regional Data</p>
-                    <p className="text-sm text-muted-foreground">Tourist and report statistics by region</p>
-                  </div>
-                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={regionData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="region" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="reports" fill="#f59e0b" />
+                    <Bar dataKey="tourists" fill="#1e3a8a" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>

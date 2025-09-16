@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Map as MapIcon, Plus, Upload, Edit, Trash2, Save, X } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Map as MapIcon, Plus, Upload, Edit, Trash2, Save, X, FileUp } from 'lucide-react';
 
 interface Geofence {
   id: string;
@@ -161,12 +162,31 @@ export default function Map() {
                 Interactive Map
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-full p-0">
-              <div className="w-full h-full rounded-lg overflow-hidden bg-muted/20 flex items-center justify-center">
-                <div className="text-center">
-                  <MapIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-lg font-medium text-foreground">Map Loading</p>
-                  <p className="text-sm text-muted-foreground">Interactive map with geofences will appear here</p>
+            <CardContent className="h-full">
+              <div className="w-full h-full bg-gradient-to-br from-blue-50 to-green-50 rounded-lg flex items-center justify-center border-2 border-dashed border-border relative overflow-hidden">
+                {/* Mock Map Interface */}
+                <div className="absolute inset-0 opacity-40"></div>
+                
+                {/* Map Overlay with Geofences */}
+                <div className="relative w-full h-full p-4">
+                  {/* Simulated geofence markers */}
+                  <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-emerald-200/50 rounded-full border-2 border-emerald-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-emerald-700">Safe Zone</span>
+                  </div>
+                  <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-red-200/50 rounded-full border-2 border-red-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-red-700">Danger</span>
+                  </div>
+                  <div className="absolute bottom-1/3 left-1/2 w-18 h-18 bg-amber-200/50 rounded-full border-2 border-amber-500 flex items-center justify-center">
+                    <span className="text-xs font-medium text-amber-700">Risky</span>
+                  </div>
+                </div>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-background/10 to-transparent rounded-lg pointer-events-none"></div>
+                
+                <div className="text-center space-y-2 z-10">
+                  <MapIcon className="h-12 w-12 mx-auto text-muted-foreground" />
+                  <p className="text-muted-foreground font-medium">Interactive Map View</p>
+                  <p className="text-sm text-muted-foreground">Geofence visualization and editing tools</p>
                 </div>
               </div>
             </CardContent>
@@ -227,6 +247,9 @@ export default function Map() {
       <Card>
         <CardHeader>
           <CardTitle>Geofence List</CardTitle>
+          <CardDescription>
+            Manage all created geofences and their properties
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>

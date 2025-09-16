@@ -323,10 +323,11 @@ export default function Reviews() {
                   <TableHead>Tourist ID</TableHead>
                   <TableHead>Location</TableHead>
                   <TableHead>Timestamp</TableHead>
-                  <TableHead className="w-96">Review Text</TableHead>
+                  <TableHead>Review Text</TableHead>
                   <TableHead>Rating</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -353,8 +354,8 @@ export default function Reviews() {
                         {review.timestamp}
                       </div>
                     </TableCell>
-                    <TableCell className="max-w-96">
-                      <p className="text-sm leading-relaxed">{review.reviewText}</p>
+                    <TableCell className="max-w-md">
+                      <p className="text-sm line-clamp-2">{review.reviewText}</p>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
@@ -368,20 +369,24 @@ export default function Reviews() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant={review.status === 'approved' ? 'default' : 'outline'} 
-                          size="sm" 
-                          className={review.status === 'approved' ? 'bg-success text-success-foreground' : 'hover:bg-success/10'}
-                        >
-                          Approve
-                        </Button>
-                        <Button 
-                          variant={review.status === 'rejected' ? 'default' : 'outline'} 
-                          size="sm"
-                          className={review.status === 'rejected' ? 'bg-muted text-muted-foreground' : 'hover:bg-muted/50'}
-                        >
-                          Hide
+                      <Badge className={getStatusBadge(review.status)}>
+                        {review.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-1">
+                        {review.status === 'pending' && (
+                          <>
+                            <Button variant="outline" size="sm" className="text-emerald-600">
+                              Approve
+                            </Button>
+                            <Button variant="outline" size="sm" className="text-red-600">
+                              Reject
+                            </Button>
+                          </>
+                        )}
+                        <Button variant="ghost" size="sm">
+                          View
                         </Button>
                       </div>
                     </TableCell>

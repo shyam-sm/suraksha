@@ -38,6 +38,7 @@ const authorityNavItems = [
   { title: 'Reports', url: '/reports', icon: FileText },
   { title: 'Broadcast', url: '/broadcast', icon: Radio },
   { title: 'Tourist Management', url: '/tourists', icon: Users },
+  { title: 'Alerts & Incidents', url: '/alerts', icon: AlertTriangle },
   { title: 'Analytics', url: '/analytics', icon: TrendingUp },
   { title: 'News Scraper', url: '/news-scraper', icon: Globe },
 ];
