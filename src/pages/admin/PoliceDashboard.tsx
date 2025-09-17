@@ -1,4 +1,7 @@
 import { motion } from 'framer-motion';
+import MapView from "@/components/ui/MapView";
+
+
 import { 
   Shield, 
   Users, 
@@ -182,13 +185,13 @@ export default function PoliceDashboard() {
                 Live Incident & Alert Map
               </CardTitle>
               <CardDescription>
-                Real-time visualization of incidents and panic alerts
+                Real-time visualizations of tourist clusters
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-96 bg-slate-100 rounded-lg flex items-center justify-center relative overflow-hidden">
-                {/* Map Placeholder */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-green-50">
+                {/* Map Placeholder 
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-green-50">
                   <div className="absolute top-4 left-4 bg-white p-2 rounded-lg shadow-sm">
                     <div className="flex items-center space-x-2 text-xs">
                       <div className="w-2 h-2 bg-red-500 rounded-full"></div>
@@ -204,16 +207,19 @@ export default function PoliceDashboard() {
                     </div>
                   </div>
                   
-                  {/* Sample markers */}
+                  Sample markers 
                   <div className="absolute top-24 left-32 w-4 h-4 bg-red-500 rounded-full animate-pulse shadow-lg"></div>
                   <div className="absolute top-48 right-24 w-4 h-4 bg-orange-500 rounded-full animate-pulse shadow-lg"></div>
                   <div className="absolute bottom-32 left-24 w-4 h-4 bg-red-500 rounded-full animate-pulse shadow-lg"></div>
                 </div>
-                <div className="text-center z-10">
+                */}
+                
+                {/* <div className="text-center z-10">
                   <MapPin className="w-16 h-16 text-slate-400 mx-auto mb-4" />
                   <p className="text-slate-600 font-medium">Interactive Map Integration</p>
                   <p className="text-sm text-slate-500">Live incident tracking and geofencing</p>
-                </div>
+                </div> */}
+                  <MapView />
               </div>
             </CardContent>
           </Card>

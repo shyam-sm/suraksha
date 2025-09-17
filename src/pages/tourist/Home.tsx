@@ -142,7 +142,7 @@ export default function TouristHome() {
               <Gauge className="w-6 h-6" />
               <span>Safety Meter</span>
             </CardTitle>
-            <CardDescription>Real-time safety assessment for your location</CardDescription>
+            <CardDescription>Real-time safety assessment for your Trip</CardDescription>
           </CardHeader>
           <CardContent className="relative z-10">
             {/* Gauge Display */}
