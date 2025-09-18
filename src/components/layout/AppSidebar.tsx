@@ -39,6 +39,7 @@ const adminNavItems = [
   { title: 'Broadcast', url: '/broadcast', icon: Radio },
   { title: 'Tourist Management', url: '/tourist-management', icon: Users },
   { title: 'Alerts & Incidents', url: '/incidents', icon: AlertTriangle },
+  { title: 'News Scraper', url: '/news-scraper', icon: Globe },
   { title: 'Analytics', url: '/analytics', icon: TrendingUp },
 ];
 

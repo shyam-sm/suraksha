@@ -6,6 +6,7 @@ import { AuthService } from '@/lib/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Admin Pages
+import NewsScraper from '@/pages/admin/NewsScraper';
 import Dashboard from '@/pages/admin/Dashboard';
 import Map from '@/pages/admin/Map';
 import Reviews from '@/pages/admin/Reviews';
@@ -41,6 +42,7 @@ function AdminRoutes() {
       <Route path="/tourist-management" element={<TouristManagement />} />
       <Route path="/incidents" element={<IncidentReports />} />
       <Route path="/analytics" element={<Analytics />} />
+      <Route path="/news-scraper" element={<NewsScraper />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
