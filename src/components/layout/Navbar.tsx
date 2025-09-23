@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Bell, ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+// import { NavLink, useLocation } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,38 +16,46 @@ import { useAuth } from '@/contexts/AuthContext';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import appLogo from '@/assets/app-logo.png';
 
+const roleDisplayMap: Record<string, string> = {
+  admin: 'Administrator',
+  police: 'Police Officer',
+  tourism: 'Tourism Officer',
+  tourist: 'Tourist',
+};
+
+const roleBadgeMap: Record<string, 'default' | 'secondary' | 'outline'> = {
+  admin: 'default',
+  police: 'default',
+  tourism: 'secondary',
+  tourist: 'outline',
+};
+
+const roleRoutes: Record<string, { home: string; settings: string }> = {
+  admin: {
+    home: '/dashboard',         // ✅ matches AdminRoutes
+    settings: '/settings',      // ✅ matches AdminRoutes
+  },
+  police: {
+    home: '/dashboard',         // ✅ matches PoliceRoutes
+    settings: '/settings',      // ✅ matches PoliceRoutes
+  },
+  tourist: {
+    home: '/home',              // ✅ matches TouristRoutes
+    settings: '/settings',      // ✅ matches TouristRoutes
+  },
+};
+
+
 export function Navbar() {
   const { user, logout } = useAuth();
-  const [notifications] = useState(3); // Mock notification count
+  const [notifications] = useState(3);
+  const navigate = useNavigate();
 
-  const getRoleDisplay = (role: string) => {
-    switch (role) {
-      case 'admin':
-        return 'Administrator';
-      case 'police':
-        return 'Police Officer';
-      case 'tourism':
-        return 'Tourism Officer';
-      case 'tourist':
-        return 'Tourist';
-      default:
-        return role;
-    }
-  };
-
-  const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
-      case 'admin':
-      case 'police':
-        return 'default';
-      case 'tourism':
-        return 'secondary';
-      case 'tourist':
-        return 'outline';
-      default:
-        return 'outline';
-    }
-  };
+  const role = user?.role || 'tourist';
+  const displayName = roleDisplayMap[role] || role;
+  const badgeVariant = roleBadgeMap[role] || 'outline';
+  const homeRoute = roleRoutes[role]?.home || '/';
+  const settingsRoute = roleRoutes[role]?.settings || '/settings';
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -62,12 +72,11 @@ export function Navbar() {
         </div>
 
         <div className="ml-auto flex items-center space-x-4">
-          {/* Notifications */}
           <Button variant="ghost" size="sm" className="relative">
             <Bell className="w-4 h-4" />
             {notifications > 0 && (
-              <Badge 
-                variant="destructive" 
+              <Badge
+                variant="destructive"
                 className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
               >
                 {notifications}
@@ -75,7 +84,6 @@ export function Navbar() {
             )}
           </Button>
 
-          {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -91,23 +99,24 @@ export function Navbar() {
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user?.name}</p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {user?.email}
-                  </p>
-                  <Badge variant={getRoleBadgeVariant(user?.role || '')} className="w-fit mt-1">
-                    {getRoleDisplay(user?.role || '')}
+                  <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                  <Badge variant={badgeVariant} className="w-fit mt-1">
+                    {displayName}
                   </Badge>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => navigate(homeRoute)}>
                 <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <span>Home</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => navigate(settingsRoute)}>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-destructive focus:text-destructive"

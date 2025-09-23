@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { DigitalIdProvider } from "@/contexts/DigitalIdContext";
 
 // Pages
 import Login from "./pages/Login";
@@ -22,6 +23,8 @@ function AppRoutes() {
       </div>
     );
   }
+
+  
 
   return (
     <Routes>
@@ -45,7 +48,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <DigitalIdProvider>
+            <AppRoutes />
+          </DigitalIdProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

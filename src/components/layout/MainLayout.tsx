@@ -4,6 +4,7 @@ import { AppSidebar } from './AppSidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthService } from '@/lib/auth';
 import { Routes, Route, Navigate } from 'react-router-dom';
+// import { DigitalIdProvider } from "@/context/DigitalIdContext";
 
 // Admin Pages
 import NewsScraper from '@/pages/admin/NewsScraper';
